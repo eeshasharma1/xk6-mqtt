@@ -40,7 +40,7 @@ let publisher = new mqtt.Client(
     // A username to authenticate to the MQTT server
     "admin-user",
     // Password to match username
-    "oJs43SWfsUZn5gRPqNxC",
+    "REDACTED",
     // clean session setting
     false,
     // Client id for reader
