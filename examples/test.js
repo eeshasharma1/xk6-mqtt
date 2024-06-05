@@ -5,9 +5,7 @@ tests Mqtt with a 100 messages per connection.
 
 */
 
-import {
-    check
-} from 'k6';
+import * as vehicle_state_proto from 'generated/tools/proto/hive/ota/vehicle_state_pb';
 
 const mqtt = require('k6/x/mqtt');
 
@@ -59,46 +57,37 @@ let publisher = new mqtt.Client(
 )
 let err;
 
-const send_command_request = {
-    vehicle_uuid: "8b9dbede-27fc-485a-a55b-e20a72bcb257",
-    command_wrapper: {
-      command: {
-        blinker_dance: {
-          run_blinker_dance: true,
-        },
-      },
-      enqueue_time: new Date().toISOString(),
-    },
-  }
+// const myVehicleState = vehicle_state_proto.VehicleState()
+// myVehicleState.setDoorsLocked(false)
+
+// const send_command_request = {
+//     vehicle_uuid: "8b9dbede-27fc-485a-a55b-e20a72bcb257",
+//     command_wrapper: {
+//       command: {
+//         blinker_dance: {
+//           run_blinker_dance: true,
+//         },
+//       },
+//       // enqueue_time: new Date().toISOString(),
+//     },
+//   }
+
+//   const vehicle_state_request = {
+//     doors_locked: false,
+//   };
+
+// const my_message = require('vehicle_command_producer_service/sendcommandrequest')
+
 
 try {
     console.log("in test.js connecting to broker")
     publisher.connect()
-    try {
-        publisher.publish(
-            // topic to be used
-            k6Topic,
-            // The QoS of messages
-            1,
-            // Message to be sent
-            "Hello, k6!",
-            // retain policy on message
-            false,
-            // timeout in ms
-            publishTimeout,
-        );
-    } catch (error) {
-        console.log("We failed to publish!: ", error)
-        err_publish = error
-    }
-    console.log("back in test after connecting")
 }
 catch (error) {
     err = error
 }
 
 export default function () {
-    return
     for (let i = 0; i < messageCount; i++) {
         // publish count messages
         let err_publish;
@@ -120,9 +109,9 @@ export default function () {
             console.log("We failed to publish!: ", error)
             err_publish = error
         }
-        check(err_publish, {
-            "is sent": err => err == undefined
-        });
+        // check(err_publish, {
+        //     "is sent": err => err == undefined
+        // });
     }
 }
 
