@@ -18,7 +18,7 @@ func (c *client) Publish(
 ) error {
 	ctx := context.Background()
 
-	// Add user properties if any were passed in.
+	// Add user property to indicate that message is from a load test.
 	properties := &paho.PublishProperties{
 		User: []paho.UserProperty{
 			{
