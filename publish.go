@@ -15,20 +15,17 @@ func (c *client) Publish(
 	message []byte,
 	retain bool,
 	timeout uint,
-	userProperties map[string]string,
 ) error {
 	ctx := context.Background()
 
 	// Add user properties if any were passed in.
-	var properties *paho.PublishProperties
-	if len(userProperties) > 0 {
-		properties = &paho.PublishProperties{}
-	}
-	for k, v := range userProperties {
-		properties.User = append(properties.User, paho.UserProperty{
-			Key:   k,
-			Value: v,
-		})
+	properties := &paho.PublishProperties{
+		User: []paho.UserProperty{
+			{
+				Key:   "IsLoadTest",
+				Value: "true",
+			},
+		},
 	}
 
 	_, publish_error := c.connectionManager.Publish(ctx, &paho.Publish{
